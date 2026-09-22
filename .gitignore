@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.DS_Store
+build/
+dist/
+*.app/
+*.icns
+.venv/
+# Account data never belongs in this repository.
+auth.json
+profiles.json
+*.sqlite*
+*.log
+.env*

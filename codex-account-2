@@ -1,0 +1,4 @@
+#!/bin/bash
+# Compatibility helper. Run python3 install.py first.
+set -euo pipefail
+exec "$HOME/.local/bin/codex-account-2" "$@"

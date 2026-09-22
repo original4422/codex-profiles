@@ -1,0 +1,16 @@
+name: Checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Native launcher type checks
+        run: |
+          xcrun swiftc -typecheck -framework AppKit src/AccountLauncher.swift
+          xcrun swiftc -typecheck -framework AppKit src/FocusApp.swift
+          xcrun swiftc -typecheck -framework AppKit src/MakeIcon.swift
