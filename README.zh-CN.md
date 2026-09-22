@@ -30,9 +30,12 @@
 
 ## 快速开始
 
-在本仓库目录执行：
+克隆仓库，然后预览并安装：
 
 ```bash
+git clone https://github.com/original4422/codex-profiles.git
+cd codex-profiles
+
 # 只查看计划，不修改文件或 Dock。
 python3 install.py --profile work --name "工作账号" --dry-run
 
@@ -57,11 +60,11 @@ python3 install.py --profile work --name "工作账号" --pin
 
 ## 一句话让你的 agent 帮你安装
 
-在已打开本仓库的编程 agent 中，复制下面这句话：
+向你的编程 agent 复制下面这句话：
 
-> 请按照当前 Codex Profiles 仓库的 docs/AGENT_INSTALL.md 帮我安装：先检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
+> 请帮我安装 https://github.com/original4422/codex-profiles ，按照仓库的 docs/AGENT_INSTALL.md 检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
 
-如果 agent 尚未打开仓库，在这句话前附上仓库地址或本地路径即可。具体步骤见 [agent 安装指南](docs/AGENT_INSTALL.md)。当前仓库尚未配置公开 GitHub remote，因此这里不提供尚不可用的远程安装链接。
+具体步骤见 [agent 安装指南](docs/AGENT_INSTALL.md)。安装过程会从源码在本机编译启动器。
 
 ## 环境要求
 

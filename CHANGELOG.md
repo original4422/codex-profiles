@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 — unreleased
+## 0.3.0 — 2026-09-22 (development preview)
 
 - Create any named profile on first installation; remove the fixed A/B bootstrap.
 - Build additional launchers directly through `codex-profile add`.

@@ -13,7 +13,7 @@ Unit and subprocess tests cover profile isolation, 25-profile registry round-tri
 
 The macOS smoke test actually compiles and signs four launcher bundles in a temporary directory. It checks initial installation, subsequent `add`, distinct bundle IDs and paths, CLI routing for all four profiles, and read-only planning. It does not open the official app, contact OpenAI, use real account data or modify the Dock.
 
-CI runs the checks on Python 3.10 and 3.14, and smoke builds on the newer interpreter. A workflow definition is not evidence that hosted CI has run; this source checkout has not yet been published.
+CI runs the checks on Python 3.10 and 3.14, and smoke builds on the newer interpreter. See the [GitHub Actions runs](https://github.com/original4422/codex-profiles/actions/workflows/check.yml) for hosted results; local checks and hosted checks are separate evidence.
 
 ## Local evidence
 

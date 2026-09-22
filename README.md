@@ -7,6 +7,7 @@
 [![macOS](https://img.shields.io/badge/platform-macOS-111827)](#requirements)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB)](#requirements)
 [![License: MIT](https://img.shields.io/badge/license-MIT-00947C)](LICENSE)
+[![Checks](https://github.com/original4422/codex-profiles/actions/workflows/check.yml/badge.svg)](https://github.com/original4422/codex-profiles/actions/workflows/check.yml)
 
 [简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Agent install](#let-your-agent-install-it) · [Commands](docs/USAGE.md) · [Contributing](CONTRIBUTING.md)
 
@@ -32,9 +33,12 @@ Codex Profiles gives each account a separate launcher identity. Click its number
 
 ## Quick start
 
-From a local checkout of this repository:
+Clone the repository, then preview and install a profile:
 
 ```bash
+git clone https://github.com/original4422/codex-profiles.git
+cd codex-profiles
+
 # Preview the installation without changing files or the Dock.
 python3 install.py --profile work --name "Work" --dry-run
 
@@ -63,15 +67,15 @@ Your ordinary `codex` command keeps its current account. For example, use your n
 
 ### 一句话让你的 agent 帮你安装
 
-Open this repository in your coding agent and paste:
+Paste this into your coding agent:
 
-> 请按照当前 Codex Profiles 仓库的 docs/AGENT_INSTALL.md 帮我安装：先检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
+> 请帮我安装 https://github.com/original4422/codex-profiles ，按照仓库的 docs/AGENT_INSTALL.md 检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
 
 Or in English:
 
-> Install Codex Profiles from this repository using docs/AGENT_INSTALL.md: check my environment and existing profiles, create the independent desktop and CLI entries I need, pin the launchers to the Dock, preserve existing sign-ins, and verify the installation.
+> Install https://github.com/original4422/codex-profiles using its docs/AGENT_INSTALL.md: check my environment and existing profiles, create the independent desktop and CLI entries I need, pin the launchers to the Dock, preserve existing sign-ins, and verify the installation.
 
-If your agent is outside the checkout, include the repository URL or local path with that sentence. See the [agent installation guide](docs/AGENT_INSTALL.md) for the exact steps. This checkout does not yet have a published GitHub remote, so no hosted installer or release URL is advertised.
+See the [agent installation guide](docs/AGENT_INSTALL.md) for the exact steps. Installation builds the launchers locally from source.
 
 ## Requirements
 
