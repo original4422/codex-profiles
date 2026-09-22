@@ -42,9 +42,8 @@ def backup_path(path, backups):
 
 def install_command(path, content, backups):
     if path.exists() or path.is_symlink():
-        legacy = path.name == 'codex-account-2' and path.is_symlink() and 'Codex 第二账号.app/Contents/MacOS/codex-account-2' in str(path.readlink())
         owned = not path.is_symlink() and 'Managed by Codex Profiles' in path.read_text()
-        if not legacy and not owned:
+        if not owned:
             raise ValueError(f'Refusing to replace an unrelated command: {path}')
         backup_path(path, backups)
         path.unlink()
@@ -81,7 +80,7 @@ def main():
     bundle_id = 'local.codex.profiles.' + args.profile
     if app.exists():
         existing = plistlib.loads((app/'Contents/Info.plist').read_bytes()).get('CFBundleIdentifier')
-        if existing not in {bundle_id, 'local.codex.second-account-launcher'}:
+        if existing != bundle_id:
             raise ValueError(f'Refusing to replace an unrelated application: {app}')
         processes = subprocess.check_output(['ps', '-axo', 'comm='], text=True).splitlines()
         if str(app/'Contents/MacOS/AccountLauncher') in [x.strip() for x in processes]:
@@ -134,12 +133,6 @@ def main():
     prefix = '#!/bin/bash\n# Managed by Codex Profiles\n'
     engine_command = shlex.join([python, str(engine/'src/profiles.py'), '--root', str(root)])
     install_command(bin_dir/'codex-profile', prefix + 'exec ' + engine_command + ' "$@"\n', backups)
-    if 'b' in registry['profiles']:
-        compatibility = prefix + 'mode="${1:-desktop}"\nif [ "$#" -gt 0 ]; then shift; fi\ncase "$mode" in\n'
-        for mode in ['desktop', 'cli', 'status']:
-            compatibility += f'  {mode}) exec {engine_command} {mode} b "$@" ;;\n'
-        compatibility += '  *) printf "Usage: codex-account-2 [desktop|cli|status]\\n" >&2; exit 2 ;;\nesac\n'
-        install_command(bin_dir/'codex-account-2', compatibility, backups)
     if args.pin:
         subprocess.run([python, str(engine/'src/profiles.py'), '--root', str(root), 'pin', args.profile], check=True)
     print(f'Launcher: {app}\nCommand: {bin_dir / "codex-profile"}\nRegistry: {root / "profiles.json"}')

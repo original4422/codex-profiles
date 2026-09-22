@@ -26,7 +26,6 @@ python3 install.py --pin
 
 - `~/Applications/Codex 第二账号.app`
 - `~/.local/bin/codex-profile`
-- `~/.local/bin/codex-account-2`（兼容旧命令）
 - `~/Library/Application Support/Codex Profiles/`（配置、运行代码和备份）
 
 `--pin` 会先备份 Dock 偏好，然后固定第二账号启动器，并整理指向同一官方应用的重复固定图标。保留一个原版入口，保留其他应用的图标顺序与 Dock 设置。不希望调整 Dock 时省略 `--pin`，之后可以手动把启动器拖到 Dock。
@@ -108,7 +107,7 @@ CLI 命令 b ────┘             └→ CODEX_HOME(B) → 官方 Codex C
 
 升级前，在蓝色 **2** 启动器菜单选择“退出启动器”，然后重新运行安装命令；官方应用可保持运行。旧启动器、命令、管理配置和 Dock 偏好会保存在管理目录的 `backups/` 下。账号认证和会话目录不会被覆盖。
 
-移除时，退出启动器，将 `~/Applications/Codex 第二账号.app` 移到废纸篓，并从 Dock 移除其图标。需要完全移除管理工具时，可一并移走 `~/.local/bin/codex-profile`、`~/.local/bin/codex-account-2`。保留账号目录，下次安装仍可继续使用。
+移除时，退出启动器，将 `~/Applications/Codex 第二账号.app` 移到废纸篓，并从 Dock 移除其图标。需要完全移除管理工具时，可一并移走 `~/.local/bin/codex-profile`。保留账号目录，下次安装仍可继续使用。
 
 管理目录也可能包含通过 `add` 创建的新账号数据，因此不要在未检查内容时整目录删除。
 
