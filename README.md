@@ -1,134 +1,138 @@
+<div align="center">
+
 # Codex Profiles
 
-**One account profile. Two ways to use it: the official desktop app and Codex CLI.**
+**One Mac. Independent Codex accounts. Desktop and CLI.**
 
-macOS 本地账号启动器。为每个账号提供独立数据目录、带编号的 Dock 入口，以及对应的 CLI 命令。无需修改官方应用、复制登录凭据或引入请求代理。
+[![macOS](https://img.shields.io/badge/platform-macOS-111827)](#requirements)
+[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB)](#requirements)
+[![License: MIT](https://img.shields.io/badge/license-MIT-00947C)](LICENSE)
 
-## 解决的问题
+[简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Agent install](#let-your-agent-install-it) · [Commands](docs/USAGE.md) · [Contributing](CONTRIBUTING.md)
 
-额外启动一个官方应用进程后，它的运行图标仍属于官方应用。将这个图标固定到 Dock，再次点击时通常会走默认启动路径，丢失第二账号的数据目录参数。
+</div>
 
-本项目提供一个独立、常驻的原生启动器。Dock 固定的是启动器；启动器每次都根据账号配置启动或聚焦正确进程。第二账号图标是蓝底白色 **2 / CODEX**。
+![Workflow overview: independent Personal, Work and Research desktop and CLI profiles](assets/overview.svg)
 
-> 这是第三方本地工具，与 OpenAI 无隶属关系。桌面隔离使用内部环境变量，兼容性需要随官方应用更新验证。
+Run your personal, work, research, or client accounts side by side. Each profile gets its own sign-in state, conversation history, and a persistent, numbered Dock launcher. Use the same profile in the official desktop app or Codex CLI.
 
-## 安装
+**Development preview · macOS only · Source installation.** Desktop isolation relies on internal app settings; see [tested behavior and limitations](docs/TESTING.md). This is an independent project, not an OpenAI product.
 
-需要 macOS、官方 ChatGPT/Codex 桌面应用、Python 3.9+、Xcode Command Line Tools（提供 Swift 编译器）。没有额外 Python 包依赖。
+## Why this exists
 
-在下载的本仓库目录执行：
+Opening a second app process is only half the job. Pinning its *official* app icon to the Dock loses the account-specific launch arguments: quitting and reopening can return you to your default account.
 
-```bash
-python3 install.py --pin
-```
+Codex Profiles gives each account a separate launcher identity. Click its numbered icon to open or focus that account—even after quitting the official app.
 
-安装程序会在本机编译 Swift 启动器和图标，进行本地 ad-hoc 签名，并创建：
+- **As many profiles as you need.** Named accounts, no hardcoded A/B pair or built-in count limit.
+- **Desktop and CLI, one profile.** Choose the account at launch time.
+- **Persistent Dock entry.** A dedicated name and numbered icon for each account.
+- **Local and direct.** No proxy, copied tokens, modified official app, or Python runtime dependencies.
+- **Inspectable installation.** Dry-run planning, separate state paths, installation backups and rollback.
 
-- `~/Applications/Codex 第二账号.app`
-- `~/.local/bin/codex-profile`
-- `~/Library/Application Support/Codex Profiles/`（配置、运行代码和备份）
+## Quick start
 
-`--pin` 会先备份 Dock 偏好，然后固定第二账号启动器，并整理指向同一官方应用的重复固定图标。保留一个原版入口，保留其他应用的图标顺序与 Dock 设置。不希望调整 Dock 时省略 `--pin`，之后可以手动把启动器拖到 Dock。
-
-首次安装自动登记两套账号目录；如果已有第二账号配置与登录信息，会原样沿用。新用户需要在第二账号窗口完成自己的 ChatGPT 登录。
-
-| 账号 | Codex 数据目录 | 桌面数据目录 |
-| --- | --- | --- |
-| A / `a` | `~/.codex` | `~/Library/Application Support/Codex` |
-| B / `b` | `~/.codex-account-2` | `~/Library/Application Support/Codex Account 2` |
-
-普通 `codex` 命令、shell 配置和官方应用包不会被安装程序改动。源码仓库可以移动，已安装的启动器不依赖仓库路径。Python 的安装路径仍需保持可用；更换 Python 后重新安装启动器即可。
-
-## 日常使用
-
-**桌面 B + CLI A：** 点击 Dock 蓝色 **2** 图标，同时在终端使用原来的 `codex` 命令即可。
-
-也可以显式选择账号（如果 `~/.local/bin` 不在 PATH，使用下面的完整形式）：
+From a local checkout of this repository:
 
 ```bash
-~/.local/bin/codex-profile list
-~/.local/bin/codex-profile desktop b
-~/.local/bin/codex-profile cli a
-~/.local/bin/codex-profile cli b
-~/.local/bin/codex-profile cli b -C /path/to/project
-~/.local/bin/codex-profile status b
-~/.local/bin/codex-profile doctor b
+# Preview the installation without changing files or the Dock.
+python3 install.py --profile work --name "Work" --dry-run
+
+# Install a dedicated Work launcher and pin it to the Dock.
+python3 install.py --profile work --name "Work" --pin
 ```
 
-CLI 保留调用时的工作目录和全部参数。`status` 使用官方 CLI 查询认证状态；`doctor` 只检查路径、启动器、Dock 入口和认证文件是否存在，不读取 token，也不证明登录有效或实际账号身份。
+Open `~/Applications/Codex work.app` and sign in to the intended ChatGPT account. The installer does not sign you in automatically.
 
-右键蓝色 **2** 图标，可以打开对应桌面版或在 Terminal 打开此账号的 CLI。
-
-### 关闭与重新打开
-
-- 在第二账号的官方应用窗口按 **Cmd+Q**：退出第二账号应用；蓝色 **2** 启动器仍在 Dock。
-- 再次点击蓝色 **2**：仍使用 B 的账号目录。
-- 账号应用已运行时点击：根据该进程实际打开的数据文件匹配 PID，聚焦正确进程。
-- 在启动器自身菜单选择“退出启动器”：只退出启动器。它的固定图标仍可再次启动。
-- 原版 ChatGPT/Codex 图标仍是原版入口；不要把第二实例临时出现的官方图标当作蓝色 **2** 入口。
-
-这个设计会额外占用一个启动器 Dock 图标。官方应用运行时仍可能显示自己的图标；本项目不修改它的 Bundle ID、名称、签名或 Dock 行为。
-
-### 新增账号
+Add more accounts with the installed command:
 
 ```bash
-~/.local/bin/codex-profile add work --name 'Codex Work'
-python3 install.py --profile work --pin
-~/.local/bin/codex-profile cli work login
+~/.local/bin/codex-profile add research --name "Research" --pin
+~/.local/bin/codex-profile add client --name "Client" --pin
+
+~/.local/bin/codex-profile desktop work
+~/.local/bin/codex-profile cli research
+~/.local/bin/codex-profile cli client -C /path/to/project
 ```
 
-`add` 支持 `--home`、`--desktop-data` 和 `--app`，用于登记已有账号目录或非默认位置的官方应用。默认会为新账号在管理目录下创建独立路径。不同账号的目录不能相同或相互嵌套。
+`add` builds the launcher in the same step. Repeat it for additional accounts; the practical limit is your Mac's resources and each account's service limits.
 
-一个账号目录可以同时供桌面和 CLI 使用。新建目录本身不会产生登录状态；首次使用需完成登录。同一目录中的认证被多个客户端共用，退出登录可能影响其他客户端。
+Your ordinary `codex` command keeps its current account. For example, use your new Work desktop launcher alongside your existing personal CLI. If `~/.local/bin` is already on `PATH`, you can shorten the commands to `codex-profile …`.
 
-## 原理
+## Let your agent install it
+
+### 一句话让你的 agent 帮你安装
+
+Open this repository in your coding agent and paste:
+
+> 请按照当前 Codex Profiles 仓库的 docs/AGENT_INSTALL.md 帮我安装：先检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
+
+Or in English:
+
+> Install Codex Profiles from this repository using docs/AGENT_INSTALL.md: check my environment and existing profiles, create the independent desktop and CLI entries I need, pin the launchers to the Dock, preserve existing sign-ins, and verify the installation.
+
+If your agent is outside the checkout, include the repository URL or local path with that sentence. See the [agent installation guide](docs/AGENT_INSTALL.md) for the exact steps. This checkout does not yet have a published GitHub remote, so no hosted installer or release URL is advertised.
+
+## Requirements
+
+| Requirement | Purpose |
+| --- | --- |
+| macOS | Native Dock launchers and app activation |
+| Official ChatGPT/Codex desktop app | Runs the actual desktop sessions and provides a bundled CLI fallback |
+| Python 3.10+ | Installer and account manager; standard library only |
+| Xcode Command Line Tools | Swift compiler and native build tools |
+
+The source is compiled on your Mac and ad-hoc signed locally. No administrator access is needed for this tool's default installation. Linux and Windows desktop launchers are not implemented.
+
+## Everyday commands
+
+| Command | Action |
+| --- | --- |
+| `codex-profile list` | List configured accounts and paths |
+| `codex-profile add <id> --pin` | Create another account and its Dock launcher |
+| `codex-profile desktop <id>` | Open or focus that account's desktop app |
+| `codex-profile cli <id> [args…]` | Run Codex CLI with that account |
+| `codex-profile terminal <id>` | Open its CLI in Terminal |
+| `codex-profile status <id>` | Ask the official CLI for authentication status |
+| `codex-profile doctor <id>` | Check paths, launcher and Dock registration |
+| `codex-profile pin <id>` | Pin an installed launcher |
+
+**Quit and reopen:** Cmd+Q in the official app exits that account's desktop process. Its numbered launcher remains in the Dock. Click the numbered icon to return to the same account. The official app may still show its own running icon; pin and use the *numbered launcher*.
+
+## How it works
 
 ```text
-蓝色 2 启动器 ─┐
-桌面命令 b ────┼─→ 账号 B 配置 → CODEX_HOME(B) + 桌面数据目录(B) → 官方桌面应用
-CLI 命令 b ────┘             └→ CODEX_HOME(B) → 官方 Codex CLI
-
-普通 codex ───────────────────→ 默认 CODEX_HOME(A) → 官方 Codex CLI
+Named profile
+├── CODEX_HOME ───────────────────────────────→ Codex CLI
+└── CODEX_HOME + independent desktop data ────→ Official desktop app
+         ↑
+Persistent, account-specific Dock launcher
 ```
 
-桌面首次启动使用 macOS `open -n` 并显式传递：
+New accounts live under `~/Library/Application Support/Codex Profiles/accounts/<id>` and `desktop/<id>`. The launcher passes `CODEX_HOME`, `CODEX_ELECTRON_USER_DATA_PATH`, and `--user-data-dir`. Existing processes are matched by the profile data files they actually have open, not by their shared application name.
 
-- `CODEX_HOME`
-- `CODEX_ELECTRON_USER_DATA_PATH`
-- `--user-data-dir`
+These are application profiles, not operating-system sandboxes. Accounts can access the same local projects; use separate worktrees when editing concurrently. Sharing a profile between desktop and CLI also shares its authentication state.
 
-在已验证的官方版本中，应用会自行设置 Electron userData；只传 Chromium 的 `--user-data-dir` 不够可靠。显式桌面隔离路径也能使该版本在载入 shell 环境后保留选定的 CODEX_HOME。
+[Full usage and existing accounts](docs/USAGE.md) · [Architecture](docs/ARCHITECTURE.md) · [Testing](docs/TESTING.md)
 
-启动前过滤继承的 `CODEX_*` 会话变量、API 身份变量和 `ELECTRON_RUN_AS_NODE`，然后设置选定账号的路径。已有账号配置不改写；新账号配置默认使用文件认证缓存与 ChatGPT 登录。
-
-认证、历史和运行数据保留在仓库外。安装器和管理器不读取、复制或代理认证 token。它不是操作系统沙箱：多个账号仍可访问同一 macOS 用户可访问的项目和文件。
-
-## 升级与卸载
-
-升级前，在蓝色 **2** 启动器菜单选择“退出启动器”，然后重新运行安装命令；官方应用可保持运行。旧启动器、命令、管理配置和 Dock 偏好会保存在管理目录的 `backups/` 下。账号认证和会话目录不会被覆盖。
-
-移除时，退出启动器，将 `~/Applications/Codex 第二账号.app` 移到废纸篓，并从 Dock 移除其图标。需要完全移除管理工具时，可一并移走 `~/.local/bin/codex-profile`。保留账号目录，下次安装仍可继续使用。
-
-管理目录也可能包含通过 `add` 创建的新账号数据，因此不要在未检查内容时整目录删除。
-
-## 开发与验证
+## Development
 
 ```bash
-python3 -m unittest discover -s tests -v
-xcrun swiftc -typecheck -framework AppKit src/AccountLauncher.swift
-xcrun swiftc -typecheck -framework AppKit src/FocusApp.swift
-xcrun swiftc -typecheck -framework AppKit src/MakeIcon.swift
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+make check
+
+# macOS: compile four launchers in a temporary directory and verify CLI routing.
+make smoke
 ```
 
-详见 [测试范围与手工验收](docs/TESTING.md)。自动测试不使用真实账号或调用模型。
+Ruff checks Python formatting and lint; native sources use `swift-format`. The test suite covers multi-profile isolation, command arguments, installation planning and failure rollback. Smoke tests use a local fixture, never real credentials or model calls.
 
-发布范围只包含源码、文档与测试；生成的 `.app` 包包含本机安装路径，不作为通用二进制直接发布。
+See [CONTRIBUTING.md](CONTRIBUTING.md). Keep changes small; propose compatibility layers before implementing them.
 
-## 参考与许可证
+## Credits & license
 
-- [官方认证文档](https://learn.chatgpt.com/docs/auth)
-- [官方配置与状态目录](https://learn.chatgpt.com/docs/config-file/config-advanced)
-- [ccheney/chatgpt-multi-account](https://github.com/ccheney/chatgpt-multi-account)
-- [edihasaj/codex-account-switcher](https://github.com/edihasaj/codex-account-switcher)
+Inspired by the account-directory isolation approach in [chatgpt-multi-account](https://github.com/ccheney/chatgpt-multi-account) and [codex-account-switcher](https://github.com/edihasaj/codex-account-switcher). The launcher and manager here are independently implemented.
 
-参考了上述项目的目录隔离思路；本项目独立实现原生 Dock 启动器和账号管理。采用 [MIT License](LICENSE)。
+[MIT](LICENSE). Authentication and subscription access remain with the [official Codex client](https://learn.chatgpt.com/docs/auth).

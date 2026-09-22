@@ -1,39 +1,37 @@
-# 验证范围
+# Testing
 
-## 自动检查
+## Local checks
 
-`python3 -m unittest discover -s tests -v` 覆盖：
+```bash
+make check  # Ruff, Python tests, Swift formatting and type checks
+make smoke # Four real launcher builds with a fixture desktop app
+```
 
-- 将重复原版 Dock 入口替换为独立启动器，保留其他图标，重复执行不增加图标。
-- 启动参数同时携带账号目录和桌面数据目录；重开时路径保持一致。
-- 清除父进程账号/任务变量，保留系统 HOME。
-- 多账号状态目录禁止共享或嵌套；拒绝顶层目录符号链接。
-- 保留已有认证和用户配置内容。
-- CLI 选择正确账号，保留工作目录与参数，不经 shell 重解释参数。
-- 已运行的账号按 PID 聚焦；退出后的账号使用指定目录重新启动。
+Activate the development virtual environment first; see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
-Swift 文件分别进行类型检查；安装程序会真实编译原生程序、生成图标并对启动器本地签名。
+Unit and subprocess tests cover profile isolation, 25-profile registry round-tripping, account-specific CLI arguments, environment cleanup, install planning, equal display names, failure rollback, Dock target repair, and PID-based launch decisions.
 
-## 本机集成检查
+The macOS smoke test actually compiles and signs four launcher bundles in a temporary directory. It checks initial installation, subsequent `add`, distinct bundle IDs and paths, CLI routing for all four profiles, and read-only planning. It does not open the official app, contact OpenAI, use real account data or modify the Dock.
 
-2026-09-22 在官方桌面版 `26.915.31945`、Codex CLI `0.155.1` 上完成：
+CI runs the checks on Python 3.10 and 3.14, and smoke builds on the newer interpreter. A workflow definition is not evidence that hosted CI has run; this source checkout has not yet been published.
 
-- 新启动器成功安装并常驻。
-- Dock 固定入口从两个同目标的原版图标变为原版入口和独立账号入口。
-- 新启动器启动了第二账号官方进程，并验证其独立目录环境变量。
-- 两套账号目录均可用官方 CLI 查询到 ChatGPT 登录状态。
-- 进程匹配逻辑能将 A、B 映射到不同的现有进程。
+## Local evidence
 
-这些检查不等于验证窗口内的邮箱、订阅信息或模型调用。界面自动化无法可靠读取本机 Codex 窗口，窗口身份与 Cmd+Q 重开结果由用户验收。
+- Earlier launcher version: inspected official desktop `26.915.31945` and CLI `0.155.1`; verified separate desktop processes and data paths, account-specific process matching, and CLI authentication status.
+- Current source: multi-profile unit/subprocess tests and four real isolated builds passed locally.
+- UI account identity, Cmd+Q/reopen and reboot behavior require manual acceptance. Do not infer these from directory checks alone.
 
-## 手工验收
+## Manual acceptance
 
-1. 保持 A 运行，点击第二账号的编号启动器，核对窗口账号为 B。
-2. B 运行时反复点击编号图标，确认聚焦 B，没有新增同账号窗口进程。
-3. 在 B 窗口 Cmd+Q；再次点击编号图标，确认仍为 B，A 不受影响。
-4. 退出编号启动器后再次从 Dock 打开，确认仍为 B。
-5. 重启电脑后重复步骤 1–3。
-6. 普通 `codex` 使用 A，`codex-profile cli b` 使用 B；通过 CLI `/status` 核对身份。
-7. 对两个测试目录分别运行小任务，确认各账号可以独立使用。
+Use accounts and projects you control. Do not interrupt an account that is executing real work.
 
-不要为了自动测试退出正在执行真实任务的账号，也不要使用模型调用作为默认安装检查。
+1. Create at least three profiles and log in to the intended accounts.
+2. Open each numbered Dock launcher; verify the account shown in each official window.
+3. Click an already running account's launcher; verify it focuses that account.
+4. Cmd+Q in one official account window; click its numbered launcher again and verify the same identity.
+5. Quit the numbered launcher itself; open it again from the Dock.
+6. Restart macOS and repeat the launch/reopen checks.
+7. Verify ordinary `codex` still uses its original account and `codex-profile cli <id>` selects the requested profile.
+8. Inspect a two-digit numbered launcher icon for clipping.
+
+A pass on one official app version is not a promise of compatibility with future versions.

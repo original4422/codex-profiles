@@ -1,0 +1,22 @@
+name: Bug report
+description: Report an account routing, launcher or installation problem.
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: macOS, Python, Codex Profiles and official app versions.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Exact command or Dock entry, steps, expected and actual behavior. Never include tokens or auth.json.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sanitized diagnostics
+      description: Relevant error text or doctor output. Remove private paths if needed.

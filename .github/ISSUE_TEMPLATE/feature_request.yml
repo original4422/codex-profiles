@@ -1,0 +1,16 @@
+name: Feature request
+description: Propose a focused improvement before adding complexity.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Smallest useful solution
+      description: Include alternatives and any added dependencies or compatibility behavior.
+    validations:
+      required: true

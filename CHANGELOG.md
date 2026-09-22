@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 — unreleased
+
+- Create any named profile on first installation; remove the fixed A/B bootstrap.
+- Build additional launchers directly through `codex-profile add`.
+- Use profile IDs for new app filenames and fit multi-digit icon labels.
+- Add dry-run planning, serialized installations and replacement rollback.
+- Add bilingual documentation, agent installation instructions and generated overview artwork.
+- Standardize Python/Swift formatting and test four real profile installations.
+
 ## 0.2.0
 
 - Replace the one-shot shell app with a persistent native Dock launcher.

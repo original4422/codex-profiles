@@ -13,15 +13,24 @@ final class Launcher: NSObject, NSApplicationDelegate {
         main.addItem(item)
         let menu = NSMenu(title: displayName)
         item.submenu = menu
-        menu.addItem(withTitle: "打开 \(displayName) 桌面版", action: #selector(openDesktop), keyEquivalent: "o").target = self
-        menu.addItem(withTitle: "打开此账号的 CLI", action: #selector(openTerminal), keyEquivalent: "t").target = self
+        menu.addItem(
+            withTitle: "Open \(displayName) Desktop", action: #selector(openDesktop),
+            keyEquivalent: "o"
+        ).target = self
+        menu.addItem(
+            withTitle: "Open Account CLI", action: #selector(openTerminal), keyEquivalent: "t"
+        ).target = self
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(withTitle: "退出启动器", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        menu.addItem(
+            withTitle: "Quit Launcher", action: #selector(NSApplication.terminate(_:)),
+            keyEquivalent: "q")
         NSApp.mainMenu = main
         run("desktop")
     }
 
-    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool)
+        -> Bool
+    {
         run("desktop")
         return false
     }
@@ -30,8 +39,13 @@ final class Launcher: NSObject, NSApplicationDelegate {
 
     func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
         let menu = NSMenu()
-        menu.addItem(withTitle: "打开 \(displayName) 桌面版", action: #selector(openDesktop), keyEquivalent: "").target = self
-        menu.addItem(withTitle: "打开此账号的 CLI", action: #selector(openTerminal), keyEquivalent: "").target = self
+        menu.addItem(
+            withTitle: "Open \(displayName) Desktop", action: #selector(openDesktop),
+            keyEquivalent: ""
+        ).target = self
+        menu.addItem(
+            withTitle: "Open Account CLI", action: #selector(openTerminal), keyEquivalent: ""
+        ).target = self
         return menu
     }
 
@@ -41,9 +55,10 @@ final class Launcher: NSObject, NSApplicationDelegate {
     private func run(_ command: String) {
         guard running == nil else { return }
         guard let python = info["AccountPython"] as? String,
-              let engine = info["AccountEngine"] as? String,
-              let root = info["AccountRoot"] as? String, !profile.isEmpty else {
-            showError("启动器配置不完整，请重新运行安装程序。")
+            let engine = info["AccountEngine"] as? String,
+            let root = info["AccountRoot"] as? String, !profile.isEmpty
+        else {
+            showError("Launcher configuration is incomplete. Run the installer again.")
             return
         }
         let task = Process()
@@ -55,20 +70,24 @@ final class Launcher: NSObject, NSApplicationDelegate {
         task.standardOutput = FileHandle.nullDevice
         running = task
         task.terminationHandler = { [weak self] process in
-            let message = String(data: errors.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+            let message =
+                String(data: errors.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+                ?? ""
             DispatchQueue.main.async {
                 self?.running = nil
                 if process.terminationStatus != 0 { self?.showError(message) }
             }
         }
-        do { try task.run() }
-        catch { running = nil; showError(error.localizedDescription) }
+        do { try task.run() } catch {
+            running = nil
+            showError(error.localizedDescription)
+        }
     }
 
     private func showError(_ message: String) {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
-        alert.messageText = "无法打开 \(displayName)"
+        alert.messageText = "Unable to open \(displayName)"
         alert.informativeText = message
         alert.runModal()
     }

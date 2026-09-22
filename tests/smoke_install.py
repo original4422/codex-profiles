@@ -1,0 +1,65 @@
+"""Build four real launcher bundles in a temporary sandbox; never launch Codex."""
+
+import json
+import os
+import plistlib
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[1]
+
+
+def main() -> None:
+    with tempfile.TemporaryDirectory(prefix="codex-profiles-smoke-") as temporary:
+        root = Path(temporary)
+        fake = root / "Fixture.app/Contents"
+        (fake / "Resources").mkdir(parents=True)
+        (fake / "Info.plist").write_bytes(plistlib.dumps({"CFBundleExecutable": "Fixture"}))
+        cli = fake / "Resources/codex"
+        cli.write_text('#!/bin/sh\nprintf "%s\\n" "$CODEX_HOME"\n')
+        cli.chmod(0o700)
+        state = root / "state"
+        base = [
+            sys.executable,
+            str(REPO / "install.py"),
+            "--root",
+            str(state),
+            "--applications-dir",
+            str(root / "apps"),
+            "--bin-dir",
+            str(root / "bin"),
+            "--app",
+            str(fake.parent),
+        ]
+        for identifier in ("personal", "work", "research"):
+            subprocess.run(
+                [*base, "--profile", identifier, "--name", "Same display name"], check=True
+            )
+        manager = root / "bin/codex-profile"
+        subprocess.run([str(manager), "add", "client", "--app", str(fake.parent)], check=True)
+        registry = json.loads((state / "profiles.json").read_text())
+        assert list(registry["profiles"]) == ["personal", "work", "research", "client"]
+        for identifier, profile in registry["profiles"].items():
+            app = Path(profile["launcher"])
+            info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
+            assert info["AccountProfile"] == identifier
+            assert app.name == f"Codex {identifier}.app"
+            assert info["CFBundleIdentifier"] == f"local.codex.profiles.{identifier}"
+            subprocess.run(["codesign", "--verify", "--strict", str(app)], check=True)
+            # Force the fixture's bundled CLI to avoid launching the real CLI on PATH.
+            result = subprocess.check_output(
+                [str(manager), "cli", identifier],
+                env={**os.environ, "PATH": "/usr/bin:/bin"},
+                text=True,
+            )
+            assert result.strip() == profile["home"]
+        # Real read-only planning must not create a fifth registered profile.
+        subprocess.run([*base, "--profile", "preview", "--dry-run"], check=True)
+        assert len(json.loads((state / "profiles.json").read_text())["profiles"]) == 4
+        print("PASS: four real launcher builds, add workflow, signatures and isolated CLI routing.")
+
+
+if __name__ == "__main__":
+    main()
