@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-00947C)](LICENSE)
 [![Checks](https://github.com/original4422/codex-profiles/actions/workflows/check.yml/badge.svg)](https://github.com/original4422/codex-profiles/actions/workflows/check.yml)
 
-[简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Agent install](#let-your-agent-install-it) · [Commands](docs/USAGE.md) · [Contributing](CONTRIBUTING.md)
+[简体中文](README.zh-CN.md) · [Agent install](#let-your-agent-install-it) · [Quick start](#quick-start) · [Commands](docs/USAGE.md) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -30,6 +30,20 @@ Codex Profiles gives each account a separate launcher identity. Click its number
 - **Persistent Dock entry.** A dedicated name and numbered icon for each account.
 - **Local and direct.** No proxy, copied tokens, modified official app, or Python runtime dependencies.
 - **Inspectable installation.** Dry-run planning, separate state paths, installation backups and rollback.
+
+## Let your agent install it
+
+### 一句话让你的 agent 帮你安装
+
+Paste this into your coding agent:
+
+> 请帮我安装 https://github.com/original4422/codex-profiles ，按照仓库的 docs/AGENT_INSTALL.md 检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
+
+Or in English:
+
+> Install https://github.com/original4422/codex-profiles using its docs/AGENT_INSTALL.md: check my environment and existing profiles, create the independent desktop and CLI entries I need, pin the launchers to the Dock, preserve existing sign-ins, and verify the installation.
+
+See the [agent installation guide](docs/AGENT_INSTALL.md) for the exact steps. Installation builds the launchers locally from source.
 
 ## Quick start
 
@@ -62,20 +76,6 @@ Add more accounts with the installed command:
 `add` builds the launcher in the same step. Repeat it for additional accounts; the practical limit is your Mac's resources and each account's service limits.
 
 Your ordinary `codex` command keeps its current account. For example, use your new Work desktop launcher alongside your existing personal CLI. If `~/.local/bin` is already on `PATH`, you can shorten the commands to `codex-profile …`.
-
-## Let your agent install it
-
-### 一句话让你的 agent 帮你安装
-
-Paste this into your coding agent:
-
-> 请帮我安装 https://github.com/original4422/codex-profiles ，按照仓库的 docs/AGENT_INSTALL.md 检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
-
-Or in English:
-
-> Install https://github.com/original4422/codex-profiles using its docs/AGENT_INSTALL.md: check my environment and existing profiles, create the independent desktop and CLI entries I need, pin the launchers to the Dock, preserve existing sign-ins, and verify the installation.
-
-See the [agent installation guide](docs/AGENT_INSTALL.md) for the exact steps. Installation builds the launchers locally from source.
 
 ## Requirements
 

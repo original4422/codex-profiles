@@ -1,55 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-labelledby="title desc" lang="en">
-<title id="title">Codex Profiles: one Mac, independent accounts</title>
-<desc id="desc">Personal, Work and Research each have a dedicated desktop launcher and CLI entry. More profiles can be added. This is a workflow illustration, not an application screenshot.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-labelledby="title desc" lang="zh-CN">
+<title id="title">Codex Profiles：一台 Mac，多个独立账号</title>
+<desc id="desc">个人、工作、研究账号各有独立的桌面启动器与 CLI 入口，可按需添加更多账号。这是工作流示意图，并非应用截图。</desc>
 <rect width="1280" height="560" rx="24" fill="#F4F6F3"/>
 <g font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif">
 <text x="64" y="66" fill="#51665D" font-size="14" font-weight="700" letter-spacing="3">CODEX PROFILES / macOS</text>
-<text x="64" y="129" fill="#172C22" font-size="44" font-weight="700">One Mac. Every account has a home.</text>
-<text x="64" y="166" fill="#5D6B64" font-size="19">Dedicated Dock launchers. Account-scoped CLI. Your official app.</text>
+<text x="64" y="129" fill="#172C22" font-size="44" font-weight="700">一台 Mac，每个账号都有独立空间。</text>
+<text x="64" y="166" fill="#5D6B64" font-size="19">独立 Dock 启动器，按账号选择 CLI，直接使用官方应用。</text>
 
 <g transform="translate(64,210)">
 <rect width="336" height="245" rx="18" fill="#FFFFFF" stroke="#DAE1DB"/>
 <rect x="24" y="24" width="64" height="64" rx="16" fill="#456CFA"/>
 <text x="56" y="67" text-anchor="middle" fill="white" font-size="28" font-weight="700">01</text>
-<text x="108" y="52" fill="#172C22" font-size="23" font-weight="700">Personal</text>
-<text x="108" y="77" fill="#68766E" font-size="14">Independent profile</text>
+<text x="108" y="52" fill="#172C22" font-size="23" font-weight="700">个人账号</text>
+<text x="108" y="77" fill="#68766E" font-size="14">独立账号配置</text>
 <path d="M24 111 H312" stroke="#E5EAE6"/>
 <text x="24" y="145" fill="#526359" font-size="14">DOCK</text>
-<text x="98" y="145" fill="#172C22" font-size="16">Open Personal</text>
+<text x="98" y="145" fill="#172C22" font-size="16">打开个人账号</text>
 <text x="24" y="181" fill="#526359" font-size="14">CLI</text>
 <text x="98" y="181" fill="#172C22" font-size="15" font-family="SFMono-Regular, Consolas, monospace">cli personal</text>
 <circle cx="31" cy="216" r="4" fill="#456CFA"/>
-<text x="44" y="221" fill="#68766E" font-size="13">Separate sign-in and history</text>
+<text x="44" y="221" fill="#68766E" font-size="13">登录信息与会话记录各自独立</text>
 </g>
 <g transform="translate(424,210)">
 <rect width="336" height="245" rx="18" fill="#FFFFFF" stroke="#DAE1DB"/>
 <rect x="24" y="24" width="64" height="64" rx="16" fill="#00947C"/>
 <text x="56" y="67" text-anchor="middle" fill="white" font-size="28" font-weight="700">02</text>
-<text x="108" y="52" fill="#172C22" font-size="23" font-weight="700">Work</text>
-<text x="108" y="77" fill="#68766E" font-size="14">Independent profile</text>
+<text x="108" y="52" fill="#172C22" font-size="23" font-weight="700">工作账号</text>
+<text x="108" y="77" fill="#68766E" font-size="14">独立账号配置</text>
 <path d="M24 111 H312" stroke="#E5EAE6"/>
 <text x="24" y="145" fill="#526359" font-size="14">DOCK</text>
-<text x="98" y="145" fill="#172C22" font-size="16">Open Work</text>
+<text x="98" y="145" fill="#172C22" font-size="16">打开工作账号</text>
 <text x="24" y="181" fill="#526359" font-size="14">CLI</text>
 <text x="98" y="181" fill="#172C22" font-size="15" font-family="SFMono-Regular, Consolas, monospace">cli work</text>
 <circle cx="31" cy="216" r="4" fill="#00947C"/>
-<text x="44" y="221" fill="#68766E" font-size="13">Separate sign-in and history</text>
+<text x="44" y="221" fill="#68766E" font-size="13">登录信息与会话记录各自独立</text>
 </g>
 <g transform="translate(784,210)">
 <rect width="336" height="245" rx="18" fill="#FFFFFF" stroke="#DAE1DB"/>
 <rect x="24" y="24" width="64" height="64" rx="16" fill="#A56A22"/>
 <text x="56" y="67" text-anchor="middle" fill="white" font-size="28" font-weight="700">03</text>
-<text x="108" y="52" fill="#172C22" font-size="23" font-weight="700">Research</text>
-<text x="108" y="77" fill="#68766E" font-size="14">Independent profile</text>
+<text x="108" y="52" fill="#172C22" font-size="23" font-weight="700">研究账号</text>
+<text x="108" y="77" fill="#68766E" font-size="14">独立账号配置</text>
 <path d="M24 111 H312" stroke="#E5EAE6"/>
 <text x="24" y="145" fill="#526359" font-size="14">DOCK</text>
-<text x="98" y="145" fill="#172C22" font-size="16">Open Research</text>
+<text x="98" y="145" fill="#172C22" font-size="16">打开研究账号</text>
 <text x="24" y="181" fill="#526359" font-size="14">CLI</text>
 <text x="98" y="181" fill="#172C22" font-size="15" font-family="SFMono-Regular, Consolas, monospace">cli research</text>
 <circle cx="31" cy="216" r="4" fill="#A56A22"/>
-<text x="44" y="221" fill="#68766E" font-size="13">Separate sign-in and history</text>
+<text x="44" y="221" fill="#68766E" font-size="13">登录信息与会话记录各自独立</text>
 </g>
 <text x="1192" y="337" fill="#85968A" font-size="44" text-anchor="middle">+</text>
-<text x="64" y="512" fill="#526359" font-size="16">Add the profiles you need. No built-in two-account limit.</text>
-<text x="1216" y="512" text-anchor="end" fill="#89958E" font-size="12">WORKFLOW OVERVIEW</text>
+<text x="64" y="512" fill="#526359" font-size="16">按需添加更多账号，不限于双开。</text>
+<text x="1216" y="512" text-anchor="end" fill="#89958E" font-size="12">工作流示意图</text>
 </g></svg>

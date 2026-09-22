@@ -4,11 +4,11 @@
 
 **一台 Mac，多个独立账号，桌面和 CLI 自由搭配。**
 
-[English](README.md) · [快速开始](#快速开始) · [让-agent-安装](#一句话让你的-agent-帮你安装) · [使用手册](docs/USAGE.md)
+[English](README.md) · [让 agent 安装](#一句话让你的-agent-帮你安装) · [快速开始](#快速开始) · [使用手册](docs/USAGE.md)
 
 </div>
 
-![多个账号分别拥有桌面启动器与 CLI 入口的工作流示意图](assets/overview.svg)
+![多个账号分别拥有桌面启动器与 CLI 入口的工作流示意图](assets/overview.zh-CN.svg)
 
 让个人、工作、研究或客户账号同时使用官方 Codex。每个账号有独立的登录信息、会话目录和带编号的 Dock 启动器；桌面与 CLI 可以使用相同账号，也可以选择不同账号。
 
@@ -27,6 +27,14 @@
 - **可检查、可恢复**：支持安装预览、安装备份、失败回滚和状态诊断。
 
 “没有内置上限”不代表硬件资源无限，同时运行数量仍受内存、CPU 和各账号额度限制。
+
+## 一句话让你的 agent 帮你安装
+
+向你的编程 agent 复制下面这句话：
+
+> 请帮我安装 https://github.com/original4422/codex-profiles ，按照仓库的 docs/AGENT_INSTALL.md 检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
+
+具体步骤见 [agent 安装指南](docs/AGENT_INSTALL.md)。安装过程会从源码在本机编译启动器。
 
 ## 快速开始
 
@@ -57,14 +65,6 @@ python3 install.py --profile work --name "工作账号" --pin
 ```
 
 `add` 会直接构建对应启动器，无需再执行第二条安装命令。重复执行即可添加更多账号。普通 `codex` 命令保持原来的账号；如果 `~/.local/bin` 已在 PATH 中，可以直接使用 `codex-profile`。
-
-## 一句话让你的 agent 帮你安装
-
-向你的编程 agent 复制下面这句话：
-
-> 请帮我安装 https://github.com/original4422/codex-profiles ，按照仓库的 docs/AGENT_INSTALL.md 检查环境和已有账号配置，再按我需要的账号数量创建独立的桌面与 CLI 入口，固定到 Dock，保留已有登录信息，最后验证安装并告诉我如何使用。
-
-具体步骤见 [agent 安装指南](docs/AGENT_INSTALL.md)。安装过程会从源码在本机编译启动器。
 
 ## 环境要求
 
