@@ -43,7 +43,7 @@ If a launcher is already running and needs an upgrade, have the user quit that l
 ~/.local/bin/codex-profile doctor work
 ```
 
-Open the launcher path reported by the installer. Let the user complete ChatGPT login and verify the intended account. `status work` can subsequently confirm the CLI authentication method; it does not verify the email shown in the desktop window.
+Open the launcher path reported by the installer. Let the user complete ChatGPT login and verify the intended account. `status work` confirms the CLI authentication method; check the desktop window for the signed-in account.
 
 Ask the user to check Cmd+Q followed by reopening the numbered Dock icon. Do not report the UI check as passed based only on process or directory checks. Do not invoke models merely to test installation.
 

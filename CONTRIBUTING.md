@@ -29,10 +29,11 @@ Python 3.10+ and Xcode Command Line Tools are required. There are no third-party
 - Propose compatibility layers, legacy aliases or historical format adapters before implementing them.
 - Never copy tokens or silently relocate account directories.
 - Installer changes must leave unrelated apps and commands alone.
+- Describe functionality and usage directly; omit disclaimers and speculative caveats. Follow the writing and error-handling rules in `AGENTS.md`.
 - Visual assets are code-generated. Edit `scripts/render_overview.py` and regenerate the SVG; do not replace it with an uneditable screenshot.
 
 ## Report a problem
 
-Include macOS, Python and official app versions, the command or exact Dock entry used, expected behavior, actual behavior and a minimal reproduction. `doctor` is useful for paths but cannot verify the account email in a window.
+Include macOS, Python and official app versions, the command or exact Dock entry used, expected behavior, actual behavior and a minimal reproduction. Use `doctor` to inspect paths and the desktop window to check the signed-in account.
 
 Remove personal paths if needed. Never attach `auth.json`, cookies, tokens, complete account directories or private task logs.

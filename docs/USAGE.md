@@ -1,6 +1,6 @@
 # Usage
 
-## Profiles, not client-specific accounts
+## Account profiles
 
 A profile is an account-scoped Codex directory plus an independent desktop data directory. Use any registered profile with the desktop app, the CLI, or both. There is no hardcoded count limit.
 
@@ -89,10 +89,10 @@ The official app may keep running during a launcher update. Do not quit active C
 - **Not logged in:** open the chosen launcher and complete ChatGPT login, or run `codex-profile cli <id> login`.
 - **Official app not found:** pass `--app` during installation.
 - **Update refuses to replace a running launcher:** quit the numbered launcher, not the official app.
-- **Existing process is active but no window appears:** use that official app's window menu or reopen its window. Process activation does not promise to reconstruct every closed-window state.
+- **Existing process is active but no window appears:** use that official app's window menu or reopen its window.
 
 ## Uninstall
 
 Quit the numbered launcher, move its `.app` bundle to Trash and remove its Dock pin. Remove `~/.local/bin/codex-profile` if you no longer need the manager. Account directories remain available for a future installation.
 
-The manager state directory may contain credentials and conversation history under `accounts/`. Do not delete the whole directory merely to remove a launcher. Profile deletion and credential cleanup are deliberately not automatic commands.
+The manager state directory may contain credentials and conversation history under `accounts/`. Do not delete the whole directory merely to remove a launcher.

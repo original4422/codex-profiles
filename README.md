@@ -17,7 +17,7 @@
 
 Run your personal, work, research, or client accounts side by side. Each profile gets its own sign-in state, conversation history, and a persistent, numbered Dock launcher. Use the same profile in the official desktop app or Codex CLI.
 
-**Development preview · macOS only · Source installation.** Desktop isolation relies on internal app settings; see [tested behavior and limitations](docs/TESTING.md). This is an independent project, not an OpenAI product.
+**macOS · Source installation.**
 
 ## Why this exists
 
@@ -60,7 +60,7 @@ python3 install.py --profile work --name "Work" --dry-run
 python3 install.py --profile work --name "Work" --pin
 ```
 
-Open `~/Applications/Codex work.app` and sign in to the intended ChatGPT account. The installer does not sign you in automatically.
+Open `~/Applications/Codex work.app` and sign in to the intended ChatGPT account.
 
 Add more accounts with the installed command:
 
@@ -73,7 +73,7 @@ Add more accounts with the installed command:
 ~/.local/bin/codex-profile cli client -C /path/to/project
 ```
 
-`add` builds the launcher in the same step. Repeat it for additional accounts; the practical limit is your Mac's resources and each account's service limits.
+`add` builds the launcher in the same step. Repeat it to add more accounts.
 
 Your ordinary `codex` command keeps its current account. For example, use your new Work desktop launcher alongside your existing personal CLI. If `~/.local/bin` is already on `PATH`, you can shorten the commands to `codex-profile …`.
 
@@ -86,7 +86,7 @@ Your ordinary `codex` command keeps its current account. For example, use your n
 | Python 3.10+ | Installer and account manager; standard library only |
 | Xcode Command Line Tools | Swift compiler and native build tools |
 
-The source is compiled on your Mac and ad-hoc signed locally. No administrator access is needed for this tool's default installation. Linux and Windows desktop launchers are not implemented.
+The source is compiled on your Mac and ad-hoc signed locally. No administrator access is needed for this tool's default installation.
 
 ## Everyday commands
 
@@ -115,7 +115,7 @@ Persistent, account-specific Dock launcher
 
 New accounts live under `~/Library/Application Support/Codex Profiles/accounts/<id>` and `desktop/<id>`. The launcher passes `CODEX_HOME`, `CODEX_ELECTRON_USER_DATA_PATH`, and `--user-data-dir`. Existing processes are matched by the profile data files they actually have open, not by their shared application name.
 
-These are application profiles, not operating-system sandboxes. Accounts can access the same local projects; use separate worktrees when editing concurrently. Sharing a profile between desktop and CLI also shares its authentication state.
+Accounts can access the same local projects. Sharing a profile between desktop and CLI also shares its authentication state.
 
 [Full usage and existing accounts](docs/USAGE.md) · [Architecture](docs/ARCHITECTURE.md) · [Testing](docs/TESTING.md)
 

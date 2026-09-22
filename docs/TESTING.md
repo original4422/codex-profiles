@@ -11,19 +11,19 @@ Activate the development virtual environment first; see [CONTRIBUTING.md](../CON
 
 Unit and subprocess tests cover profile isolation, 25-profile registry round-tripping, account-specific CLI arguments, environment cleanup, install planning, equal display names, failure rollback, Dock target repair, and PID-based launch decisions.
 
-The macOS smoke test actually compiles and signs four launcher bundles in a temporary directory. It checks initial installation, subsequent `add`, distinct bundle IDs and paths, CLI routing for all four profiles, and read-only planning. It does not open the official app, contact OpenAI, use real account data or modify the Dock.
+The macOS smoke test actually compiles and signs four launcher bundles in a temporary directory. It checks initial installation, subsequent `add`, distinct bundle IDs and paths, CLI routing for all four profiles, and read-only planning.
 
-CI runs the checks on Python 3.10 and 3.14, and smoke builds on the newer interpreter. See the [GitHub Actions runs](https://github.com/original4422/codex-profiles/actions/workflows/check.yml) for hosted results; local checks and hosted checks are separate evidence.
+CI runs the checks on Python 3.10 and 3.14, and smoke builds on the newer interpreter. See the [GitHub Actions runs](https://github.com/original4422/codex-profiles/actions/workflows/check.yml) for hosted results.
 
 ## Local evidence
 
 - Earlier launcher version: inspected official desktop `26.915.31945` and CLI `0.155.1`; verified separate desktop processes and data paths, account-specific process matching, and CLI authentication status.
 - Current source: multi-profile unit/subprocess tests and four real isolated builds passed locally.
-- UI account identity, Cmd+Q/reopen and reboot behavior require manual acceptance. Do not infer these from directory checks alone.
+- UI account identity, Cmd+Q/reopen and reboot behavior require manual acceptance.
 
 ## Manual acceptance
 
-Use accounts and projects you control. Do not interrupt an account that is executing real work.
+Run these checks with idle accounts and test projects.
 
 1. Create at least three profiles and log in to the intended accounts.
 2. Open each numbered Dock launcher; verify the account shown in each official window.
@@ -33,5 +33,3 @@ Use accounts and projects you control. Do not interrupt an account that is execu
 6. Restart macOS and repeat the launch/reopen checks.
 7. Verify ordinary `codex` still uses its original account and `codex-profile cli <id>` selects the requested profile.
 8. Inspect a two-digit numbered launcher icon for clipping.
-
-A pass on one official app version is not a promise of compatibility with future versions.

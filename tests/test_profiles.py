@@ -149,7 +149,7 @@ class ProfileTests(unittest.TestCase):
                     for key in ["a", "b"]
                 },
             }
-            profiles.save_registry(root, registry)
+            (root / "profiles.json").write_text(json.dumps(registry))
             env = {
                 **os.environ,
                 "PATH": str(bin_dir) + os.pathsep + os.environ.get("PATH", ""),

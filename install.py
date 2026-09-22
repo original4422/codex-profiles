@@ -229,7 +229,7 @@ def replace_artifacts(artifacts: list[tuple[Path, Path]], backups: Path) -> None
                 shutil.move(str(target), previous)
             completed.append((target, previous))
             shutil.move(str(source), target)
-    except (OSError, shutil.Error):
+    except OSError:
         for target, previous in reversed(completed):
             if target.is_dir():
                 shutil.rmtree(target)
@@ -287,6 +287,6 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except (ValueError, OSError, KeyError, subprocess.SubprocessError) as error:
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
         print(f"Installation failed: {error}", file=sys.stderr)
         sys.exit(1)

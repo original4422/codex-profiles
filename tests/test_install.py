@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import install
-from src.profiles import load_registry, new_profile, save_registry, validate_profile
+from src.profiles import load_registry, new_profile, validate_profile
 
 
 def arguments(root: Path, identifier: str, **overrides) -> argparse.Namespace:
@@ -47,7 +47,7 @@ class InstallTests(unittest.TestCase):
                 profile = new_profile(root, identifier)
                 validate_profile(identifier, profile, registry["profiles"])
                 registry["profiles"][identifier] = profile
-            save_registry(root, registry)
+            (root / "profiles.json").write_text(json.dumps(registry))
             restored = load_registry(root)
             self.assertEqual(len(restored["profiles"]), 25)
             self.assertEqual(len({p["home"] for p in restored["profiles"].values()}), 25)
@@ -57,7 +57,7 @@ class InstallTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             one, _, app_one, _ = install.plan_install(arguments(root, "work", name="Shared name"))
-            save_registry(root, one)
+            (root / "profiles.json").write_text(json.dumps(one))
             two, _, app_two, _ = install.plan_install(arguments(root, "client", name="Shared name"))
             self.assertNotEqual(app_one, app_two)
             self.assertEqual(len(two["profiles"]), 2)
@@ -68,7 +68,7 @@ class InstallTests(unittest.TestCase):
             registry, profile, _, _ = install.plan_install(arguments(root, "work"))
             profile["home"] = str(root / "existing-account")
             profile["desktop_data"] = str(root / "existing-ui")
-            save_registry(root, registry)
+            (root / "profiles.json").write_text(json.dumps(registry))
             _, existing, _, _ = install.plan_install(arguments(root, "work"))
             self.assertEqual(existing["home"], profile["home"])
             with self.assertRaisesRegex(ValueError, "already uses"):

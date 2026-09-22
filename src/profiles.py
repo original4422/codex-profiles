@@ -10,7 +10,6 @@ import shlex
 import shutil
 import subprocess
 import sys
-import tempfile
 from collections.abc import Mapping
 from datetime import datetime
 from pathlib import Path
@@ -112,19 +111,6 @@ def validate_profile(identifier: str, profile: Profile, others: Mapping[str, Pro
             continue
         if any(overlaps(x, other[y]) for x in paths for y in ["home", "desktop_data"]):
             raise ValueError(f"Profile directories overlap with account {other_id}.")
-
-
-def save_registry(root: Path, data: Registry) -> None:
-    root.mkdir(parents=True, exist_ok=True, mode=0o700)
-    fd, name = tempfile.mkstemp(dir=root, prefix=".profiles-", suffix=".json")
-    try:
-        with os.fdopen(fd, "w") as output:
-            json.dump(data, output, ensure_ascii=False, indent=2)
-            output.write("\n")
-        os.replace(name, root / "profiles.json")
-    finally:
-        if os.path.exists(name):
-            os.unlink(name)
 
 
 def load_registry(root: Path) -> Registry:
@@ -387,7 +373,6 @@ def main() -> None:
                 "Dock points to account launcher:",
                 any(tile_path(t) == launcher for t in dock.get("persistent-apps", [])),
             )
-        print("This checks paths, not login validity or the identity of the signed-in account.")
         return
     if options.command == "pin":
         if "launcher" not in profile:
@@ -427,6 +412,6 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except (ValueError, OSError, KeyError, subprocess.SubprocessError) as error:
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
         print(f"codex-profile: {error}", file=sys.stderr)
         sys.exit(1)
