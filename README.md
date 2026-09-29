@@ -69,6 +69,7 @@ python3 install.py --profile work --name "工作账号" --pin
 
 - macOS。
 - 官方 ChatGPT/Codex 桌面应用。
+- 命令行功能需要 PATH 中的独立 Codex CLI；桌面启动不依赖 CLI。
 - Python 3.10+：运行时只使用标准库。
 - Xcode Command Line Tools：在本机编译 Swift 启动器。
 

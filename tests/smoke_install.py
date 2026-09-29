@@ -15,9 +15,17 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="codex-profiles-smoke-") as temporary:
         root = Path(temporary)
         fake = root / "Fixture.app/Contents"
-        (fake / "Resources").mkdir(parents=True)
-        (fake / "Info.plist").write_bytes(plistlib.dumps({"CFBundleExecutable": "Fixture"}))
-        cli = fake / "Resources/codex"
+        (fake / "MacOS").mkdir(parents=True)
+        (fake / "Info.plist").write_bytes(
+            plistlib.dumps(
+                {"CFBundleIdentifier": "com.openai.codex", "CFBundleExecutable": "Fixture"}
+            )
+        )
+        desktop = fake / "MacOS/Fixture"
+        desktop.write_text("#!/bin/sh\nexit 0\n")
+        desktop.chmod(0o700)
+        cli = root / "cli-bin/codex"
+        cli.parent.mkdir()
         cli.write_text('#!/bin/sh\nprintf "%s\\n" "$CODEX_HOME"\n')
         cli.chmod(0o700)
         state = root / "state"
@@ -48,10 +56,10 @@ def main() -> None:
             assert app.name == f"Codex {identifier}.app"
             assert info["CFBundleIdentifier"] == f"local.codex.profiles.{identifier}"
             subprocess.run(["codesign", "--verify", "--strict", str(app)], check=True)
-            # Force the fixture's bundled CLI to avoid launching the real CLI on PATH.
+            # Use a standalone fixture CLI, separate from the desktop bundle.
             result = subprocess.check_output(
                 [str(manager), "cli", identifier],
-                env={**os.environ, "PATH": "/usr/bin:/bin"},
+                env={**os.environ, "PATH": str(cli.parent) + ":/usr/bin:/bin"},
                 text=True,
             )
             assert result.strip() == profile["home"]

@@ -1,6 +1,7 @@
 import importlib.util
 import json
 import os
+import plistlib
 import subprocess
 import sys
 import tempfile
@@ -15,6 +16,39 @@ spec.loader.exec_module(profiles)
 
 
 class ProfileTests(unittest.TestCase):
+    def test_find_app_uses_bundle_metadata_without_bundled_cli(self):
+        with tempfile.TemporaryDirectory() as temp:
+            app = Path(temp) / "ChatGPT.app"
+            executable = app / "Contents/MacOS/RenamedDesktop"
+            executable.parent.mkdir(parents=True)
+            executable.write_text("#!/bin/sh\n")
+            executable.chmod(0o700)
+            info = app / "Contents/Info.plist"
+            metadata = {
+                "CFBundleIdentifier": "com.openai.codex",
+                "CFBundleExecutable": executable.name,
+            }
+            info.write_bytes(plistlib.dumps(metadata))
+            self.assertEqual(profiles.find_app({"app": str(app)}), app)
+            metadata["CFBundleIdentifier"] = "other.app"
+            info.write_bytes(plistlib.dumps(metadata))
+            with self.assertRaises(ValueError):
+                profiles.find_app({"app": str(app)})
+            metadata["CFBundleIdentifier"] = "com.openai.codex"
+            info.write_bytes(plistlib.dumps(metadata))
+            executable.unlink()
+            with self.assertRaises(ValueError):
+                profiles.find_app({"app": str(app)})
+
+    def test_missing_cli_does_not_search_desktop_app(self):
+        with (
+            patch.object(profiles.shutil, "which", return_value=None),
+            patch.object(profiles, "find_app") as find_app,
+        ):
+            with self.assertRaisesRegex(ValueError, "Codex CLI not found on PATH"):
+                profiles.run_cli({}, [])
+            find_app.assert_not_called()
+
     def test_dock_repairs_duplicate_official_icons_and_is_idempotent(self):
         original = profiles.dock_tile(
             Path("/Applications/ChatGPT.app"), "ChatGPT", "com.openai.codex"

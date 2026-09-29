@@ -42,7 +42,7 @@ The installer preserves existing credentials and configuration. Different profil
 python3 install.py --profile work --app "/path/to/ChatGPT.app"
 ```
 
-Automatic discovery checks the system and user Applications folders for the official desktop bundles. An explicitly selected app must contain the bundled Codex executable.
+Automatic discovery checks the system and user Applications folders for the official desktop bundles. The app must identify itself as `com.openai.codex` in `Info.plist` and contain the executable declared by `CFBundleExecutable`. Desktop discovery does not inspect the bundled CLI. CLI commands use the standalone `codex` on `PATH` and report a separate error when it is missing.
 
 ## Choose a client
 
