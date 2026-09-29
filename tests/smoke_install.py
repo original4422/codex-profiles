@@ -58,7 +58,30 @@ def main() -> None:
         # Real read-only planning must not create a fifth registered profile.
         subprocess.run([*base, "--profile", "preview", "--dry-run"], check=True)
         assert len(json.loads((state / "profiles.json").read_text())["profiles"]) == 4
-        print("PASS: four real launcher builds, add workflow, signatures and isolated CLI routing.")
+        # Preview through the installed manager must leave the entire installation unchanged.
+        before = {
+            path.relative_to(root): (
+                path.stat().st_mode,
+                path.read_bytes() if path.is_file() else None,
+            )
+            for path in root.rglob("*")
+        }
+        preview = subprocess.check_output(
+            [str(manager), "add", "preview", "--app", str(fake.parent), "--dry-run"], text=True
+        )
+        assert "Profile: preview" in preview
+        assert "Dry run: no files or Dock settings changed." in preview
+        after = {
+            path.relative_to(root): (
+                path.stat().st_mode,
+                path.read_bytes() if path.is_file() else None,
+            )
+            for path in root.rglob("*")
+        }
+        assert before == after
+        print(
+            "PASS: four real launcher builds, add/preview workflows, signatures and isolated CLI routing."
+        )
 
 
 if __name__ == "__main__":

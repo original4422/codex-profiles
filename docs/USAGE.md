@@ -17,6 +17,12 @@ Each command installs one profile. `--pin` is optional. It backs up the Dock set
 
 Preview any installation with `--dry-run`. It performs checks and prints paths without creating files or modifying the Dock.
 
+```bash
+codex-profile add research --name "Research" --dry-run
+```
+
+Remove `--dry-run` to install the previewed profile. If combined with `--pin`, the preview leaves the Dock unchanged.
+
 ## Register an existing account
 
 Explicitly provide its current directories:

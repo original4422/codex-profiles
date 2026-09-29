@@ -65,6 +65,7 @@ Open `~/Applications/Codex work.app` and sign in to the intended ChatGPT account
 Add more accounts with the installed command:
 
 ```bash
+~/.local/bin/codex-profile add research --name "Research" --dry-run
 ~/.local/bin/codex-profile add research --name "Research" --pin
 ~/.local/bin/codex-profile add client --name "Client" --pin
 

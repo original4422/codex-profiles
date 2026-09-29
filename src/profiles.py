@@ -321,6 +321,7 @@ def main() -> None:
     add.add_argument("profile")
     add.add_argument("--name")
     add.add_argument("--pin", action="store_true", help="Pin the new launcher to the Dock.")
+    add.add_argument("--dry-run", action="store_true", help="Show the plan without writing files.")
     add.add_argument("--home")
     add.add_argument("--desktop-data")
     add.add_argument("--app")
@@ -339,6 +340,7 @@ def main() -> None:
         validate_identifier(options.profile)
         command = [
             sys.executable,
+            "-B",  # Installed previews must not create bytecode caches.
             str(root / "engine/install.py"),
             "--root",
             str(root),
@@ -352,6 +354,8 @@ def main() -> None:
                 command.extend(["--" + option.replace("_", "-"), value])
         if options.pin:
             command.append("--pin")
+        if options.dry_run:
+            command.append("--dry-run")
         subprocess.run(command, check=True)
         return
     if options.profile not in data["profiles"]:

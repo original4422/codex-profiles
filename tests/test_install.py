@@ -111,13 +111,17 @@ class InstallTests(unittest.TestCase):
     def test_dry_run_does_not_create_state(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp) / "state"
-            options = arguments(root, "work", dry_run=True, pin=False)
+            options = arguments(root, "work", dry_run=True, pin=True)
             with (
                 patch.object(install, "parse_args", return_value=options),
                 patch.object(install, "preflight"),
                 patch.object(install, "find_app", return_value=Path("/Applications/ChatGPT.app")),
+                patch.object(install, "build_artifacts") as build,
+                patch.object(install, "pin_dock") as pin,
             ):
                 install.main()
+            build.assert_not_called()
+            pin.assert_not_called()
             self.assertFalse(root.exists())
 
     def test_invalid_registry_has_a_useful_error(self):

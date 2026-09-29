@@ -31,6 +31,7 @@ Use the IDs and labels chosen by the user. `--pin` explicitly changes the Dock, 
 For subsequent accounts:
 
 ```bash
+~/.local/bin/codex-profile add research --name "Research" --dry-run
 ~/.local/bin/codex-profile add research --name "Research" --pin
 ```
 

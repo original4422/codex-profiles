@@ -11,7 +11,7 @@ Activate the development virtual environment first; see [CONTRIBUTING.md](../CON
 
 Unit and subprocess tests cover profile isolation, 25-profile registry round-tripping, account-specific CLI arguments, environment cleanup, install planning, equal display names, failure rollback, Dock target repair, and PID-based launch decisions.
 
-The macOS smoke test actually compiles and signs four launcher bundles in a temporary directory. It checks initial installation, subsequent `add`, distinct bundle IDs and paths, CLI routing for all four profiles, and read-only planning.
+The macOS smoke test actually compiles and signs four launcher bundles in a temporary directory. It checks initial installation, subsequent `add`, distinct bundle IDs and paths, CLI routing for all four profiles, and read-only planning through both installation entry points. The installed `add --dry-run` command must preserve every fixture file's contents and permissions and leave the directory tree unchanged.
 
 CI runs the checks on Python 3.10 and 3.14, and smoke builds on the newer interpreter. See the [GitHub Actions runs](https://github.com/original4422/codex-profiles/actions/workflows/check.yml) for hosted results.
 

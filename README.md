@@ -54,6 +54,7 @@ python3 install.py --profile work --name "工作账号" --pin
 继续添加更多账号：
 
 ```bash
+~/.local/bin/codex-profile add research --name "研究账号" --dry-run
 ~/.local/bin/codex-profile add research --name "研究账号" --pin
 ~/.local/bin/codex-profile add client --name "客户账号" --pin
 
