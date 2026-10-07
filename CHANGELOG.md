@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Support `codex-profile add <id> --dry-run` to preview additional accounts through the installed manager.
+
 ## 0.3.0 — 2026-09-22 (development preview)
 
 - Create any named profile on first installation; remove the fixed A/B bootstrap.

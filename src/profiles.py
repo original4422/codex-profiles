@@ -157,7 +157,14 @@ def find_app(profile: Profile) -> Path:
         ]
     )
     for app in candidates:
-        if os.access(app / "Contents/Resources/codex", os.X_OK):
+        info_path = app / "Contents/Info.plist"
+        if not info_path.is_file():
+            continue
+        info = plistlib.loads(info_path.read_bytes())
+        if info.get("CFBundleIdentifier") != "com.openai.codex":
+            continue
+        executable = info.get("CFBundleExecutable")
+        if executable and os.access(app / "Contents/MacOS" / executable, os.X_OK):
             return app
     raise ValueError("Official ChatGPT/Codex app not found. Set the profile app path with --app.")
 
@@ -215,7 +222,7 @@ def launch_desktop(root: Path, profile: Profile) -> None:
 def run_cli(profile: Profile, arguments: list[str]) -> None:
     executable = shutil.which("codex")
     if not executable:
-        executable = str(find_app(profile) / "Contents/Resources/codex")
+        raise ValueError("Codex CLI not found on PATH. Install the standalone Codex CLI.")
     env = clean_environment()
     env["CODEX_HOME"] = profile["home"]
     os.execvpe(executable, [executable, *arguments], env)
@@ -321,6 +328,7 @@ def main() -> None:
     add.add_argument("profile")
     add.add_argument("--name")
     add.add_argument("--pin", action="store_true", help="Pin the new launcher to the Dock.")
+    add.add_argument("--dry-run", action="store_true", help="Show the plan without writing files.")
     add.add_argument("--home")
     add.add_argument("--desktop-data")
     add.add_argument("--app")
@@ -339,6 +347,7 @@ def main() -> None:
         validate_identifier(options.profile)
         command = [
             sys.executable,
+            "-B",  # Installed previews must not create bytecode caches.
             str(root / "engine/install.py"),
             "--root",
             str(root),
@@ -352,6 +361,8 @@ def main() -> None:
                 command.extend(["--" + option.replace("_", "-"), value])
         if options.pin:
             command.append("--pin")
+        if options.dry_run:
+            command.append("--dry-run")
         subprocess.run(command, check=True)
         return
     if options.profile not in data["profiles"]:

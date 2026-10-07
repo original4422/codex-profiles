@@ -65,6 +65,7 @@ Open `~/Applications/Codex work.app` and sign in to the intended ChatGPT account
 Add more accounts with the installed command:
 
 ```bash
+~/.local/bin/codex-profile add research --name "Research" --dry-run
 ~/.local/bin/codex-profile add research --name "Research" --pin
 ~/.local/bin/codex-profile add client --name "Client" --pin
 
@@ -82,7 +83,8 @@ Your ordinary `codex` command keeps its current account. For example, use your n
 | Requirement | Purpose |
 | --- | --- |
 | macOS | Native Dock launchers and app activation |
-| Official ChatGPT/Codex desktop app | Runs the actual desktop sessions and provides a bundled CLI fallback |
+| Official ChatGPT/Codex desktop app | Runs desktop sessions; discovered through bundle metadata |
+| Standalone Codex CLI on PATH | Required for CLI commands; desktop launch does not depend on it |
 | Python 3.10+ | Installer and account manager; standard library only |
 | Xcode Command Line Tools | Swift compiler and native build tools |
 
